@@ -1,0 +1,66 @@
+/*
+  Blink
+
+  Turns an LED on for one second, then off for one second, repeatedly.
+
+  Most Arduinos have an on-board LED you can control. On the UNO, MEGA and ZERO
+  it is attached to digital pin 13, on MKR1000 on pin 6. LED_BUILTIN is set to
+  the correct LED pin independent of which board is used.
+  If you want to know what pin the on-board LED is connected to on your Arduino
+  model, check the Technical Specs of your board at:
+  https://www.arduino.cc/en/Main/Products
+
+  modified 8 May 2014
+  by Scott Fitzgerald
+  modified 2 Sep 2016
+  by Arturo Guadalupi
+  modified 8 Sep 2016
+  by Colby Newman
+
+  This example code is in the public domain.
+
+  http://www.arduino.cc/en/Tutorial/Blink
+*/
+#include <avr/wdt.h>
+// the setup function runs once when you press reset or power the board
+void setup() {
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(1, OUTPUT);
+  pinMode(2, OUTPUT);
+  wdt_enable(WDTO_8S);
+}
+
+// the loop function runs over and over again forever
+void loop() {
+  //initialize ON & DONE signal
+  digitalWrite(1, HIGH); //Set "ON" signal high, keeping leonardo powered
+  digitalWrite(2, LOW); //Set "DONE" signal low, keep done stable and prepare for seding done signal
+  wdt_reset();
+  
+  //program
+  digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(1000);                       // wait for a second
+  digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+  delay(1000);                       // wait for a second
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(1000);
+  digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+  delay(1000);                       // wait for a second
+  digitalWrite(LED_BUILTIN, HIGH);
+  wdt_reset();
+  //Set DONE signal HIGH
+  digitalWrite(2, HIGH);
+  delay(100);
+//  */digitalWrite(2, LOW);
+//  delay(100);
+//  digitalWrite(2, HIGH);
+//  delay(100);
+//  digitalWrite(2,LOW);
+//  delay(500); */
+
+  //Set ON singal low
+  digitalWrite(1, LOW);
+  wdt_reset();
+  delay(100000); // delay such that leonardo has time to power off
+}
