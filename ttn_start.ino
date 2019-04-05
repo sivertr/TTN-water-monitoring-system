@@ -74,16 +74,25 @@ void loop() {
 
   // Send bytes
   ttn.sendBytes(payload, sizeof(payload));
-  
+
   debugSerial.end();
   loraSerial.end();
-  delay(100);
-  
-  pinMode(onSignal,OUTPUT);
+  delay(500);
+
+  pinMode(onSignal, OUTPUT);
   pinMode(doneSignal, OUTPUT);
   digitalWrite(doneSignal, HIGH); // Send høyt "DONE" for å starte timerkrets.
   delay(200);
   digitalWrite(onSignal, LOW); // Slå av TTUno
+  delay(50);
+  digitalWrite(onSignal, HIGH);
+  delay(50);
+  digitalWrite(onSignal, LOW);
+  delay(50);
+  digitalWrite(onSignal, HIGH);
+  delay(50);
+  digitalWrite(onSignal, LOW);
+
   delay(2000);
 }
 
