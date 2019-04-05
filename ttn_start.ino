@@ -1,12 +1,11 @@
 // Timerpins
-int onSignal = 7; // KAN IKKE VÆRE 0 eller 1 NÅR SERIALS KJØRER
+int onSignal = 1; // KAN IKKE VÆRE 0 eller 1 NÅR SERIALS KJØRER
 int doneSignal = 2;
 
 void setup() {
   // Timing-greier
   pinMode(onSignal, OUTPUT);
   digitalWrite(onSignal, HIGH); // Send høyt "ON" slik at TTUno forblir påslått.
-
   pinMode(doneSignal, OUTPUT);
   digitalWrite(doneSignal, LOW); // Sett "DONE" til lav og gjør klar til å sette det høyt når målinger er gjort.
 }
@@ -75,9 +74,15 @@ void loop() {
 
   // Send bytes
   ttn.sendBytes(payload, sizeof(payload));
-
-  digitalWrite(doneSignal, HIGH); // Send høyt "DONE" for å starte timerkrets.
+  
+  debugSerial.end();
+  loraSerial.end();
   delay(100);
+  
+  pinMode(onSignal,OUTPUT);
+  pinMode(doneSignal, OUTPUT);
+  digitalWrite(doneSignal, HIGH); // Send høyt "DONE" for å starte timerkrets.
+  delay(200);
   digitalWrite(onSignal, LOW); // Slå av TTUno
   delay(2000);
 }
