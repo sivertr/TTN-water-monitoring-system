@@ -1,5 +1,5 @@
 // Timerpins
-int onSignal = 1; // KAN IKKE VÆRE 0 eller 1 NÅR SERIALS KJØRER
+int onSignal = 3; // KAN IKKE VÆRE 0 eller 1 NÅR SERIALS KJØRER
 int doneSignal = 2;
 
 void setup() {
@@ -7,6 +7,8 @@ void setup() {
   pinMode(onSignal, OUTPUT);
   digitalWrite(onSignal, HIGH); // Send høyt "ON" slik at TTUno forblir påslått.
   pinMode(doneSignal, OUTPUT);
+  digitalWrite(doneSignal, HIGH);
+  delay(50);
   digitalWrite(doneSignal, LOW); // Sett "DONE" til lav og gjør klar til å sette det høyt når målinger er gjort.
 }
 
@@ -75,25 +77,11 @@ void loop() {
   // Send bytes
   ttn.sendBytes(payload, sizeof(payload));
 
-  debugSerial.end();
-  loraSerial.end();
-  delay(500);
+  delay(50);
 
-  pinMode(onSignal, OUTPUT);
-  pinMode(doneSignal, OUTPUT);
   digitalWrite(doneSignal, HIGH); // Send høyt "DONE" for å starte timerkrets.
-  delay(200);
   digitalWrite(onSignal, LOW); // Slå av TTUno
-  delay(50);
-  digitalWrite(onSignal, HIGH);
-  delay(50);
-  digitalWrite(onSignal, LOW);
-  delay(50);
-  digitalWrite(onSignal, HIGH);
-  delay(50);
-  digitalWrite(onSignal, LOW);
-
-  delay(2000);
+  delay(15000);
 }
 
 // *** FUNKSJONER FOR Å TA MÅLINGER ***
@@ -101,8 +89,6 @@ void loop() {
 // TEMPERATUR
 float measureTemp() {
   sensors.begin(); // Start digital temp. sensor
-  delay(500);
-
   sensors.requestTemperatures(); // Send the command to get temperature readings
   Serial.print("Temperatur: ");
   float temperature = sensors.getTempCByIndex(0);
